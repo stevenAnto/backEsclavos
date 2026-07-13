@@ -2,6 +2,11 @@ from fastapi import APIRouter
 from app.schemas.auth import GoogleToken
 from app.services.auth_service import authenticate_google
 from app.database import users_collection
+from app.schemas.record import RecordCreate
+from app.services.record_services import create_user_record
+from app.services.report_service import get_user_summary
+from fastapi import HTTPException
+
 
 
 router = APIRouter()
@@ -11,6 +16,28 @@ router = APIRouter()
 def google_login(data: GoogleToken):
     return authenticate_google(data.token)
 
+
+@router.post("/records")
+def create_record_endpoint(data: RecordCreate):
+
+    return create_user_record(
+        data.token,
+        data.value
+    )
+
+@router.post("/records/summary")
+def records_summary(data: GoogleToken):
+
+    response = get_user_summary(data.token)
+
+    if response.get("success") is False:
+
+        raise HTTPException(
+            status_code=response["status_code"],
+            detail=response["message"]
+        )
+
+    return response
 
 @router.get("/test-mongo")
 def test_mongo():
