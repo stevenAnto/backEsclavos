@@ -9,7 +9,6 @@ load_dotenv()
 
 MONGO_URL = os.getenv("MONGO_URL")
 
-print("URL Mongo:", MONGO_URL)   # temporal
 
 
 client = MongoClient(MONGO_URL)
