@@ -53,3 +53,8 @@ def test_mongo():
         "mensaje": "Usuario creado",
         "id": str(resultado.inserted_id)
     }
+
+@router.get("/records/all-summary")
+def all_summary():
+
+    return get_all_summary()

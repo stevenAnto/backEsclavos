@@ -53,3 +53,7 @@ def get_user_summary(token: str):
         "summary": totals
 
     }
+
+def get_all_summary():
+
+    return get_all_users_summary()

@@ -54,3 +54,34 @@ def get_total_by_user(user_id: str):
         "total": result[0]["total"],
         "cantidad_registros": result[0]["cantidad_registros"]
     }
+
+from app.database import db
+
+users_collection = db["users"]
+
+
+def get_all_users_summary():
+
+    users = list(users_collection.find())
+
+    result = []
+
+    for user in users:
+
+        summary = get_total_by_user(
+            str(user["_id"])
+        )
+
+        result.append({
+
+            "name": user.get("name"),
+
+            "email": user.get("email"),
+
+            "total": summary["total"],
+
+            "cantidad_registros": summary["cantidad_registros"]
+
+        })
+
+    return result
