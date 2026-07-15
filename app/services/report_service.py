@@ -1,6 +1,6 @@
 from app.services.google_auth import verify_google_token
 from app.repositories.user_repository import get_user_by_email
-from app.repositories.record_repository import get_total_by_user
+from app.repositories.record_repository import get_all_users_summary, get_total_by_user
 
 
 
