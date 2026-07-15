@@ -4,7 +4,7 @@ from app.services.auth_service import authenticate_google
 from app.database import users_collection
 from app.schemas.record import RecordCreate
 from app.services.record_services import create_user_record
-from app.services.report_service import get_user_summary
+from app.services.report_service import get_all_summary, get_user_summary
 from fastapi import HTTPException
 
 
