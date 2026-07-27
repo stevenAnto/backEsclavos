@@ -39,22 +39,16 @@ def records_summary(data: GoogleToken):
 
     return response
 
-@router.get("/test-mongo")
-def test_mongo():
 
-    usuario = {
-        "nombre": "Stv",
-        "email": "steven.undefined@gmail.com"
-    }
+@router.post("/records/all-summary")
+def all_summary(data: GoogleToken):
 
-    resultado = users_collection.insert_one(usuario)
+    response = authenticate_google(data.token)
 
-    return {
-        "mensaje": "Usuario creado",
-        "id": str(resultado.inserted_id)
-    }
-
-@router.get("/records/all-summary")
-def all_summary():
+    if response.get("success") is False:
+        raise HTTPException(
+            status_code=response["status_code"],
+            detail=response["message"]
+        )
 
     return get_all_summary()
