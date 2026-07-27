@@ -4,7 +4,7 @@ from app.services.auth_service import authenticate_google
 from app.database import users_collection
 from app.schemas.record import RecordCreate
 from app.services.record_services import create_user_record
-from app.services.report_service import get_all_summary, get_user_summary
+from app.services.report_service import get_all_summary, get_user_summary, get_user_records_summary
 from fastapi import HTTPException
 
 
@@ -52,3 +52,17 @@ def all_summary(data: GoogleToken):
         )
 
     return get_all_summary()
+
+@router.post("/records/history")
+def records_history(data: GoogleToken):
+
+    response = get_user_records_summary(data.token)
+
+    if response.get("success") is False:
+
+        raise HTTPException(
+            status_code=response["status_code"],
+            detail=response["message"]
+        )
+
+    return response
