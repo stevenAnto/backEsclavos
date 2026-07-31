@@ -2,7 +2,9 @@ from datetime import datetime, timezone
 
 from app.services.google_auth import verify_google_token
 from app.repositories.user_repository import get_user_by_email
-from app.repositories.record_repository import create_record
+from app.repositories.record_repository import create_record, get_user_records
+from app.repositories.record_repository import get_total_by_user
+
 
 
 
@@ -55,4 +57,57 @@ def create_user_record(token: str, value: int):
         "success": True,
         "message": "Registro creado",
         "record": record
+    }
+
+
+def get_user_summary_by_email(email: str):
+
+    user = get_user_by_email(email)
+
+    if not user:
+        return {
+            "success": False,
+            "message": "Usuario no encontrado",
+            "status_code": 404
+        }
+
+    totals = get_total_by_user(
+        str(user["_id"])
+    )
+
+    return {
+        "success": True,
+        "user": {
+            "id": str(user["_id"]),
+            "email": user["email"],
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        },
+        "summary": totals
+    }
+
+def get_user_records_by_email(email: str):
+
+    user = get_user_by_email(email)
+
+    if not user:
+        return {
+            "success": False,
+            "message": "Usuario no encontrado",
+            "status_code": 404
+        }
+
+    records = get_user_records(
+        str(user["_id"])
+    )
+
+    return {
+        "success": True,
+        "user": {
+            "id": str(user["_id"]),
+            "email": user["email"],
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        },
+        "records": records
     }
