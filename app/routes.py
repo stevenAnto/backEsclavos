@@ -66,3 +66,15 @@ def records_history(data: GoogleToken):
         )
 
     return response
+
+@router.get("/records/summary")
+def records_summary():
+    return get_user_summary()
+
+@router.get("/records/history")
+def records_history():
+    return get_user_records_summary()
+
+@router.get("/records/all-summary")
+def all_summary():
+    return get_all_summary()
