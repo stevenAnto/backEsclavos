@@ -95,6 +95,8 @@ def get_user_records(user_id: str):
             {"user_id": user_id},
         ).sort("created_at", -1)
     )
+    for record in records:
+        record["_id"] = str(record["_id"])
 
     return records
 
