@@ -93,7 +93,6 @@ def get_user_records(user_id: str):
     records = list(
         records_collection.find(
             {"user_id": user_id},
-            {"_id": 0}
         ).sort("created_at", -1)
     )
 
