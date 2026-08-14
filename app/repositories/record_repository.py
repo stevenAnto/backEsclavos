@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from app.database import db
 from datetime import datetime, timezone
 
@@ -96,3 +98,44 @@ def get_user_records(user_id: str):
     )
 
     return records
+
+def create_records(records):
+    if not records:
+        return 0
+
+    result = records_collection.insert_many(records)
+
+    return len(result.inserted_ids)
+
+def delete_all_records():
+    result = records_collection.delete_many({})
+    return result.deleted_count
+
+def update_record_value(record_id: str, value: int):
+
+    print("========== REGISTROS ==========")
+
+    records = records_collection.find(
+        {},
+        {
+            "_id": 1,
+            "user_id": 1,
+            "user_email": 1,
+            "value": 1
+        }
+    )
+
+    for record in records:
+        print(record)
+
+    print("================================")
+
+    result = records_collection.update_one(
+        {"_id": ObjectId(record_id)},
+        {"$set": {"value": value}}
+    )
+
+    print("matched_count:", result.matched_count)
+    print("modified_count:", result.modified_count)
+
+    return result
